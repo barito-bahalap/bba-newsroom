@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { authLink } from "@/lib/supabase";
+import { Input } from "@barito-bahalap/components";
 
 export default function LoginPage() {
   const { session, loading, signIn, sendReset } = useAuth();
@@ -41,27 +42,25 @@ export default function LoginPage() {
         Internal tool for the Barito Bahalap Media editorial team.
       </p>
       <form onSubmit={(event) => void handleSubmit(event)}>
-        <label className="field">
-          <span>Email</span>
-          <input
-            type="email"
-            autoComplete="username"
-            required
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-          />
-        </label>
+        <Input
+          id="email"
+          label="Email"
+          type="email"
+          autoComplete="username"
+          required
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+        />
         {!forgot && (
-          <label className="field">
-            <span>Password</span>
-            <input
-              type="password"
-              autoComplete="current-password"
-              required
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-            />
-          </label>
+          <Input
+            id="password"
+            label="Password"
+            type="password"
+            autoComplete="current-password"
+            required
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+          />
         )}
         {error && <p className="error">{error}</p>}
         {info && <p className="notice">{info}</p>}
