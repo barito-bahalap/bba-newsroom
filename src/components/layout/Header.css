@@ -1,0 +1,143 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky, 50);
+  background-color: var(--vt-paper);
+  border-bottom: 1px solid var(--vt-line);
+}
+
+.header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  max-width: 90rem;
+  min-height: 3.5rem;
+  margin-inline: auto;
+  padding-inline: var(--vt-gutter);
+}
+
+.header__nav,
+.header__lang,
+.header__cta {
+  display: none;
+}
+
+.header__end {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header__link {
+  color: var(--vt-navy);
+  font-family: var(--vt-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  text-transform: uppercase;
+  opacity: 0.7;
+  transition: opacity 200ms var(--vt-ease);
+}
+
+.header__link:hover,
+.header__link[aria-current="page"] {
+  opacity: 1;
+}
+
+.header__trigger {
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--vt-navy);
+  border-radius: var(--vt-radius);
+  background: transparent;
+  color: var(--vt-navy);
+  font-family: var(--vt-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.drawer {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal, 100);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  background-color: var(--vt-paper);
+  color: var(--vt-navy);
+}
+
+.drawer__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 3.5rem;
+  padding-inline: var(--vt-gutter);
+  border-bottom: 1px solid var(--vt-line);
+}
+
+.drawer__nav {
+  flex: 1;
+  display: grid;
+  gap: 2rem;
+  align-content: start;
+  padding: 2rem var(--vt-gutter);
+}
+
+.drawer__heading {
+  margin: 0 0 0.75rem;
+  font-family: var(--vt-mono);
+  font-size: 0.625rem;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  color: var(--vt-ink-muted);
+}
+
+.drawer__list {
+  width: 100%;
+  display: grid;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.drawer__link {
+  color: var(--vt-navy);
+  font-family: var(--vt-display);
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.drawer__link[aria-current="page"] {
+  color: var(--vt-teal);
+}
+
+.drawer__foot {
+  display: grid;
+  gap: 1rem;
+  padding: 1.5rem var(--vt-gutter) 2rem;
+  border-top: 1px solid var(--vt-line);
+}
+
+@media (min-width: 1024px) {
+  .header__nav {
+    display: flex;
+    gap: 2rem;
+  }
+
+  .header__lang,
+  .header__cta {
+    display: block;
+  }
+
+  .header__trigger {
+    display: none;
+  }
+}
