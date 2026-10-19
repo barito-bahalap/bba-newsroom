@@ -1,7 +1,7 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import ArticleTable from "@/components/ArticleTable";
-import Pagination from "@/components/Pagination";
+import ArticleTable from "@/components/module/ArticleTable";
+import Pagination from "@/components/module/Pagination";
 import { PAGE_SIZE, useArticleList } from "@/hooks/useArticles";
 import { useAuth } from "@/hooks/useAuth";
 import { useCategories } from "@/hooks/useCategories";
@@ -11,7 +11,7 @@ import type { ArticleStatus } from "@/lib/types";
 
 const STATUSES = Object.keys(STATUS_LABEL) as ArticleStatus[];
 
-export default function Articles() {
+export default function ArticlesPage() {
   const { profile } = useAuth();
   const [params, setParams] = useSearchParams();
   const categories = useCategories();
@@ -49,7 +49,7 @@ export default function Articles() {
   return (
     <div>
       <div className="row between">
-        <h1>Articles</h1>
+        <h1>ArticlesPage</h1>
         {can.writeArticles(profile.role) && (
           <Link className="button" to="/articles/new">
             Write a new article

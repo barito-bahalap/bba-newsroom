@@ -1,9 +1,8 @@
 export { supabase } from "@barito-bahalap/supabase";
 
-const url = import.meta.env.VITE_SUPABASE_URL as string | undefined;
-const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
-
-export const configMissing = !url || !anonKey;
+export const configMissing =
+  !import.meta.env.VITE_SUPABASE_URL ||
+  !import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
 const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
 

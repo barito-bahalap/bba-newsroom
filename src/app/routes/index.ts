@@ -1,3 +1,3 @@
-export { appRoutes } from "./AppRoutes.tsx";
+export { appRoutes } from "./AppRoutes";
 export { AppRouter } from "./AppRouter";
 export { AuthLinkRedirect } from "./AuthLinkRedirect";

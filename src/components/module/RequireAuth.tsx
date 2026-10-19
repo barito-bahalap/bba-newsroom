@@ -2,7 +2,7 @@ import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import type { Role } from "@/lib/types";
 
-export default function RequireAuth({ roles }: { roles?: Role[] }) {
+export function RequireAuth({ roles }: { roles?: Role[] }) {
   const { session, profile, loading, signOut } = useAuth();
   const location = useLocation();
 

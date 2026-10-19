@@ -4,7 +4,7 @@ import { useAuth } from "@/hooks/useAuth";
 
 const MIN_LENGTH = 12;
 
-export default function SetPassword() {
+export default function SetPasswordPage() {
   const { session, loading, updatePassword } = useAuth();
   const navigate = useNavigate();
   const [password, setPassword] = useState("");

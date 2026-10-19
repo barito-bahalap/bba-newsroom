@@ -28,7 +28,7 @@ if (configMissing) {
       <h1>Configuration missing</h1>
       <p>
         Set <code>VITE_SUPABASE_URL</code> and{" "}
-        <code>VITE_SUPABASE_ANON_KEY</code> in <code>.env</code> (see{" "}
+        <code>VITE_SUPABASE_PUBLISHABLE_KEY</code> in <code>.env</code> (see{" "}
         <code>.env.example</code>) and restart.
       </p>
     </div>,

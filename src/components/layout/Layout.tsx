@@ -4,7 +4,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { ROLE_LABEL } from "@/lib/format";
 import { can } from "@/lib/permissions";
 
-export default function Layout() {
+export function Layout() {
   const { profile, signOut } = useAuth();
   const queryClient = useQueryClient();
   const navigate = useNavigate();

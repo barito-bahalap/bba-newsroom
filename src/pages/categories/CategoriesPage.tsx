@@ -41,7 +41,7 @@ function CategoryRow({
   );
 }
 
-export default function Categories() {
+export default function CategoriesPage() {
   const categories = useCategories();
   const { create, rename, remove } = useCategoryMutations();
   const [name, setName] = useState("");
@@ -68,7 +68,7 @@ export default function Categories() {
 
   return (
     <div>
-      <h1>Categories</h1>
+      <h1>CategoriesPage</h1>
       <p className="muted">
         The slug is generated once and cannot be changed, because it appears in
         public URLs.

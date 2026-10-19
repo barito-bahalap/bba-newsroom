@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import ArticleTable from "@/components/ArticleTable";
+import ArticleTable from "@/components/module/ArticleTable";
 import { useArticleCounts, useArticlesByStatus } from "@/hooks/useArticles";
 import { useAuth } from "@/hooks/useAuth";
 import { STATUS_LABEL } from "@/lib/format";
@@ -45,7 +45,7 @@ function Section({ title, status }: SectionSpec) {
   );
 }
 
-export default function Dashboard() {
+export default function DashboardPage() {
   const { profile } = useAuth();
   const counts = useArticleCounts();
 
@@ -53,7 +53,7 @@ export default function Dashboard() {
 
   return (
     <div>
-      <h1>Dashboard</h1>
+      <h1>DashboardPage</h1>
       <div className="row">
         {can.writeArticles(profile.role) && (
           <Link className="button" to="/articles/new">

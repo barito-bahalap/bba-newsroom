@@ -5,7 +5,7 @@ import { ROLE_LABEL, errMessage } from "@/lib/format";
 
 const MIN_LENGTH = 12;
 
-export default function Account() {
+export default function AccountPage() {
   const { profile, refreshProfile, updatePassword } = useAuth();
   const updateName = useUpdateOwnName();
 
@@ -55,7 +55,7 @@ export default function Account() {
 
   return (
     <div className="card-narrow">
-      <h1>Account</h1>
+      <h1>AccountPage</h1>
       <p>
         {profile.email} ({ROLE_LABEL[profile.role]})
       </p>

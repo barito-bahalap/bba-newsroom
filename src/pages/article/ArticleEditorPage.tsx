@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import ArticleForm from "@/components/ArticleForm";
-import CorrectionPanel from "@/components/CorrectionPanel";
-import RevisionList from "@/components/RevisionList";
-import RichTextEditor from "@/components/RichTextEditor";
-import StatusBadge from "@/components/StatusBadge";
-import WorkflowBar from "@/components/WorkflowBar";
+import ArticleForm from "@/components/module/ArticleForm";
+import CorrectionPanel from "@/components/module/CorrectionPanel";
+import RevisionList from "@/components/module/RevisionList";
+import RichTextEditor from "@/components/module/RichTextEditor";
+import StatusBadge from "@/components/module/StatusBadge";
+import WorkflowBar from "@/components/module/WorkflowBar";
 import {
   useAddCorrection,
   useArticle,

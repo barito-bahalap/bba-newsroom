@@ -1,15 +1,13 @@
 // Style
 import "./Footer.css";
 // Hooks
-import { useLanguageSwitch, useSiteContent, useWordmark } from "@/hooks";
+import { useSiteContent } from "@/hooks";
 // Components
-import { LanguageSwitcher, SmartLink, Wordmark } from "@/components";
+import { SmartLink } from "@/components";
 import { Brand } from "./Brand";
 
 export function Footer() {
   const { site, footerGroups, layout } = useSiteContent();
-  const languageItems = useLanguageSwitch();
-  const { boxRef, lines } = useWordmark(site.shortName, 11);
 
   return (
     <footer className="footer">
@@ -51,16 +49,11 @@ export function Footer() {
         ))}
       </div>
 
-      <div className="vt-wrap footer__mark">
-        <Wordmark boxRef={boxRef} lines={lines} />
-      </div>
-
       <div className="vt-wrap footer__legal">
         <p>
           &copy; {new Date().getFullYear()} {site.holdingName}.{" "}
           {layout.footer.rights}
         </p>
-        <LanguageSwitcher items={languageItems} label={layout.language.label} />
       </div>
     </footer>
   );

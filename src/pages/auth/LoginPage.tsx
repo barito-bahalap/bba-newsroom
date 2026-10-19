@@ -3,7 +3,7 @@ import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { authLink } from "@/lib/supabase";
 
-export default function Login() {
+export default function LoginPage() {
   const { session, loading, signIn, sendReset } = useAuth();
   const location = useLocation();
   const from = (location.state as { from?: string } | null)?.from ?? "/";

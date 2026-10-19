@@ -6,7 +6,7 @@ import type { Role } from "@/lib/types";
 
 const ROLES = Object.keys(ROLE_LABEL) as Role[];
 
-export default function Team() {
+export default function TeamPage() {
   const { profile } = useAuth();
   const team = useTeam();
   const update = useUpdateMember();
@@ -27,7 +27,7 @@ export default function Team() {
 
   return (
     <div>
-      <h1>Team</h1>
+      <h1>TeamPage</h1>
       <p className="muted">
         New members are invited from the Supabase dashboard (Authentication,
         Users, Invite user). They appear here as inactive until you activate

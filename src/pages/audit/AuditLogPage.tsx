@@ -1,12 +1,12 @@
 import { useState } from "react";
-import Pagination from "@/components/Pagination";
+import Pagination from "@/components/module/Pagination";
 import { AUDIT_PAGE_SIZE, useAuditLog } from "@/hooks/useAudit";
 import { formatDateTime } from "@/lib/format";
 import type { AuditRow } from "@/lib/types";
 
 const ENTITIES = [
   { value: "", label: "Everything" },
-  { value: "article", label: "Articles" },
+  { value: "article", label: "ArticlesPage" },
   { value: "profile", label: "Team" },
   { value: "categories", label: "Categories" },
   { value: "corrections", label: "Corrections" },
@@ -40,7 +40,7 @@ function summarize(row: AuditRow): string {
   }
 }
 
-export default function AuditLog() {
+export default function AuditLogPage() {
   const [entity, setEntity] = useState("");
   const [page, setPage] = useState(1);
   const audit = useAuditLog(entity, page);
