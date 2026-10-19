@@ -3,12 +3,16 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "description": "Internal newsroom CMS for Barito Bahalap Media (BBM). Not public-facing.",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
-    "typecheck": "tsc -b",
-    "lint": "eslint .",
+    "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
     "update:kit": "pnpm update \"@barito-bahalap/*\" --latest"
   },
   "dependencies": {

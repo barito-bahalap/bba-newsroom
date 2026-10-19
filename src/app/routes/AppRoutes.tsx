@@ -1,28 +1,75 @@
-// Layout
+import { Suspense, lazy } from "react";
 import { Outlet } from "react-router-dom";
-import { RootLayout } from "@/components/layout";
-// i18n
-import { DEFAULT_LOCALE, ENABLED_LOCALES } from "@/i18n/locales";
+// Layout & Components
+import { Layout } from "@/components/Layout";
+import { RequireAuth } from "@/components/RequireAuth";
+import { AuthLinkRedirect } from "./AuthLinkRedirect";
 // Pages
-import HomePage from "@/pages/home/HomePage";
-import NotFoundPage from "@/pages/404/NotFoundPage";
+import Account from "@/pages/Account";
+import AuditLog from "@/pages/AuditLog";
+import Articles from "@/pages/Articles";
+import Categories from "@/pages/Categories";
+import Dashboard from "@/pages/Dashboard";
+import Login from "@/pages/Login";
+import NotFound from "@/pages/NotFound";
+import SetPassword from "@/pages/SetPassword";
+import Team from "@/pages/Team";
+// Utils
+import { WRITE_ROLES } from "@/lib/permissions";
 
-// Fresh route objects per locale so each prefix gets its own tree.
-const pageRoutes = () => [
-  { index: true, element: <HomePage /> },
-  //   { path: "about", element: <AboutPage /> },
-];
+const ArticleEditor = lazy(() => import("@/pages/ArticleEditor"));
+
+// Must live inside the router, because AuthLinkRedirect uses useNavigate.
+function AuthShell() {
+  return (
+    <>
+      <AuthLinkRedirect />
+      <Suspense fallback={<p className="center">Loading...</p>}>
+        <Outlet />
+      </Suspense>
+    </>
+  );
+}
 
 export const appRoutes = [
-  // Default locale lives at "/", every other enabled locale under "/<code>"
-  { element: <RootLayout />, children: pageRoutes() },
-  ...ENABLED_LOCALES.filter((code) => code !== DEFAULT_LOCALE).map((code) => ({
-    path: code,
-    element: <RootLayout />,
-    children: pageRoutes(),
-  })),
   {
-    element: <Outlet />,
-    children: [{ path: "*", element: <NotFoundPage /> }],
+    element: <AuthShell />,
+    children: [
+      { path: "login", element: <Login /> },
+      { path: "set-password", element: <SetPassword /> },
+      {
+        element: <RequireAuth />,
+        children: [
+          {
+            element: <Layout />,
+            children: [
+              { index: true, element: <Dashboard /> },
+              { path: "articles", element: <Articles /> },
+              {
+                element: <RequireAuth roles={WRITE_ROLES} />,
+                children: [
+                  { path: "articles/new", element: <ArticleEditor /> },
+                ],
+              },
+              { path: "articles/:id", element: <ArticleEditor /> },
+              {
+                element: <RequireAuth roles={["publisher"]} />,
+                children: [{ path: "categories", element: <Categories /> }],
+              },
+              {
+                element: <RequireAuth roles={["admin"]} />,
+                children: [{ path: "team", element: <Team /> }],
+              },
+              {
+                element: <RequireAuth roles={["admin", "publisher"]} />,
+                children: [{ path: "audit", element: <AuditLog /> }],
+              },
+              { path: "account", element: <Account /> },
+              { path: "*", element: <NotFound /> },
+            ],
+          },
+        ],
+      },
+    ],
   },
 ];
