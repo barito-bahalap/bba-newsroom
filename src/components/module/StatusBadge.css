@@ -1,0 +1,25 @@
+.status-badge {
+  display: inline-block;
+  padding: 0 var(--nr-space-2);
+  border: var(--nr-border-w) solid var(--nr-clr-border-strong);
+  border-radius: var(--nr-radius-circle);
+  color: var(--nr-clr-ink-soft);
+  font-size: var(--nr-fs-xs);
+  font-weight: var(--nr-fw-semibold);
+  white-space: nowrap;
+}
+
+.status-badge--published {
+  border-color: var(--nr-clr-safe);
+  color: var(--nr-clr-safe);
+}
+
+.status-badge--in_review {
+  border-color: var(--nr-clr-warning);
+  color: var(--nr-clr-accent-hover);
+}
+
+.status-badge--unpublished {
+  border-color: var(--nr-clr-danger);
+  color: var(--nr-clr-danger);
+}

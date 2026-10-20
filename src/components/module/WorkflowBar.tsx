@@ -1,9 +1,8 @@
 import { useState } from "react";
-import {
-  WORKFLOW_LABEL,
-  needsNote,
-  type WorkflowAction,
-} from "@/lib/permissions";
+// Style
+import "./WorkflowBar.css";
+// Utils
+import { WORKFLOW_LABEL, needsNote, type WorkflowAction } from "@/lib";
 
 interface Props {
   actions: WorkflowAction[];
@@ -16,7 +15,7 @@ const NOTE_LABEL: Partial<Record<WorkflowAction, string>> = {
   unpublish: "Reason for unpublishing (required, recorded in the audit log)",
 };
 
-export default function WorkflowBar({ actions, busy, onAction }: Props) {
+export function WorkflowBar({ actions, busy, onAction }: Props) {
   const [pending, setPending] = useState<WorkflowAction | null>(null);
   const [note, setNote] = useState("");
 

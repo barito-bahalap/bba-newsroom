@@ -1,0 +1,11 @@
+.account-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nr-space-4);
+  max-width: 32rem;
+}
+
+.account-page h2 {
+  margin-top: var(--nr-space-4);
+  font-size: var(--nr-fs-2xl);
+}

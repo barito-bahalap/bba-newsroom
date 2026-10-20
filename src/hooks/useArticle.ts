@@ -1,7 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { toRow, type ArticleValues } from "@/lib/articleValues";
-import { supabase } from "@/lib/supabase";
-import type { Article, ArticleStatus, Correction, Revision } from "@/lib/types";
+// Utils
+import { supabase, toRow } from "@/lib";
+import type { Article, ArticleStatus } from "@/lib";
+import type { Correction, Revision, ArticleValues } from "@/lib";
 
 export function useArticle(id: string | undefined) {
   return useQuery({

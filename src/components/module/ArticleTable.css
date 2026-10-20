@@ -1,0 +1,4 @@
+.article-table__title {
+  min-width: 14rem;
+  font-weight: var(--nr-fw-medium);
+}

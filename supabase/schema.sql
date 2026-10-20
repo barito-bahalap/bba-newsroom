@@ -1,14 +1,33 @@
 -- BBM Newsroom schema
--- Run once in the SQL editor of the dedicated NEWSROOM Supabase project.
+-- Run in the SQL editor of the dedicated NEWSROOM Supabase project.
+-- Safe to run more than once: every statement is idempotent.
 -- Rules (roles, workflow, audit) are enforced here in Postgres, not in the UI.
 
 -- 1. Types
-create type public.user_role as enum ('writer', 'editor', 'publisher', 'admin');
-create type public.article_status as enum ('draft', 'in_review', 'published', 'unpublished');
-create type public.content_type as enum ('editorial', 'partnership');
+do $$
+begin
+  create type public.user_role as enum ('writer', 'editor', 'publisher', 'admin');
+exception
+  when duplicate_object then null;
+end
+$$;
+do $$
+begin
+  create type public.article_status as enum ('draft', 'in_review', 'published', 'unpublished');
+exception
+  when duplicate_object then null;
+end
+$$;
+do $$
+begin
+  create type public.content_type as enum ('editorial', 'partnership');
+exception
+  when duplicate_object then null;
+end
+$$;
 
 -- 2. Profiles (one per auth user; inactive until an admin activates)
-create table public.profiles (
+create table if not exists public.profiles (
   id uuid primary key references auth.users (id) on delete cascade,
   email text not null,
   full_name text not null default '',
@@ -28,7 +47,7 @@ as $$
 $$;
 
 -- 3. Audit log (written only by triggers)
-create table public.audit_log (
+create table if not exists public.audit_log (
   id bigint generated always as identity primary key,
   actor_id uuid references public.profiles (id) on delete set null,
   action text not null,
@@ -37,8 +56,8 @@ create table public.audit_log (
   detail jsonb not null default '{}'::jsonb,
   created_at timestamptz not null default now()
 );
-create index audit_log_created_idx on public.audit_log (created_at desc);
-create index audit_log_entity_idx on public.audit_log (entity, created_at desc);
+create index if not exists audit_log_created_idx on public.audit_log (created_at desc);
+create index if not exists audit_log_entity_idx on public.audit_log (entity, created_at desc);
 
 create or replace function public.log_audit(
   p_action text,
@@ -57,7 +76,7 @@ $$;
 revoke all on function public.log_audit(text, text, text, jsonb) from public, anon, authenticated;
 
 -- 4. Categories
-create table public.categories (
+create table if not exists public.categories (
   id uuid primary key default gen_random_uuid(),
   name text not null unique,
   slug text not null unique check (slug ~ '^[a-z0-9]+(-[a-z0-9]+)*$'),
@@ -65,7 +84,7 @@ create table public.categories (
 );
 
 -- 5. Articles
-create table public.articles (
+create table if not exists public.articles (
   id uuid primary key default gen_random_uuid(),
   title text not null default '',
   slug text unique check (slug is null or slug ~ '^[a-z0-9]+(-[a-z0-9]+)*$'),
@@ -89,12 +108,12 @@ create table public.articles (
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
-create index articles_status_updated_idx on public.articles (status, updated_at desc);
-create index articles_author_idx on public.articles (author_id);
-create index articles_category_idx on public.articles (category_id);
-create index articles_published_idx on public.articles (published_at desc) where status = 'published';
+create index if not exists articles_status_updated_idx on public.articles (status, updated_at desc);
+create index if not exists articles_author_idx on public.articles (author_id);
+create index if not exists articles_category_idx on public.articles (category_id);
+create index if not exists articles_published_idx on public.articles (published_at desc) where status = 'published';
 
-create table public.article_revisions (
+create table if not exists public.article_revisions (
   id uuid primary key default gen_random_uuid(),
   article_id uuid not null references public.articles (id) on delete cascade,
   title text not null,
@@ -103,17 +122,17 @@ create table public.article_revisions (
   edited_by uuid references public.profiles (id) on delete set null,
   created_at timestamptz not null default now()
 );
-create index article_revisions_article_idx on public.article_revisions (article_id, created_at desc);
+create index if not exists article_revisions_article_idx on public.article_revisions (article_id, created_at desc);
 
 -- Append-only public correction notices (hak koreksi)
-create table public.corrections (
+create table if not exists public.corrections (
   id uuid primary key default gen_random_uuid(),
   article_id uuid not null references public.articles (id) on delete cascade,
   note text not null check (char_length(btrim(note)) > 0),
   created_by uuid default auth.uid() references public.profiles (id) on delete set null,
   created_at timestamptz not null default now()
 );
-create index corrections_article_idx on public.corrections (article_id, created_at desc);
+create index if not exists corrections_article_idx on public.corrections (article_id, created_at desc);
 
 -- 6. Validation helper
 create or replace function public.article_problem(a public.articles, for_publish boolean)
@@ -264,6 +283,7 @@ begin
 end;
 $$;
 
+drop trigger if exists articles_guard_trg on public.articles;
 create trigger articles_guard_trg
 before insert or update on public.articles
 for each row execute function public.articles_guard();
@@ -313,6 +333,7 @@ begin
 end;
 $$;
 
+drop trigger if exists articles_after_trg on public.articles;
 create trigger articles_after_trg
 after insert or update or delete on public.articles
 for each row execute function public.articles_after();
@@ -332,10 +353,12 @@ begin
 end;
 $$;
 
+drop trigger if exists categories_audit_trg on public.categories;
 create trigger categories_audit_trg
 after insert or update or delete on public.categories
 for each row execute function public.generic_audit();
 
+drop trigger if exists corrections_audit_trg on public.corrections;
 create trigger corrections_audit_trg
 after insert on public.corrections
 for each row execute function public.generic_audit();
@@ -359,6 +382,7 @@ begin
 end;
 $$;
 
+drop trigger if exists on_auth_user_created on auth.users;
 create trigger on_auth_user_created
 after insert on auth.users
 for each row execute function public.handle_new_user();
@@ -394,6 +418,7 @@ begin
 end;
 $$;
 
+drop trigger if exists profiles_guard_trg on public.profiles;
 create trigger profiles_guard_trg
 before update on public.profiles
 for each row execute function public.profiles_guard();
@@ -419,6 +444,7 @@ begin
 end;
 $$;
 
+drop trigger if exists profiles_audit_trg on public.profiles;
 create trigger profiles_audit_trg
 after update on public.profiles
 for each row execute function public.profiles_audit();
@@ -443,29 +469,37 @@ alter table public.corrections enable row level security;
 alter table public.audit_log enable row level security;
 
 -- profiles
+drop policy if exists profiles_select on public.profiles;
 create policy profiles_select on public.profiles for select to authenticated
   using (id = auth.uid() or public.app_role() is not null);
+drop policy if exists profiles_update on public.profiles;
 create policy profiles_update on public.profiles for update to authenticated
   using (id = auth.uid() or public.app_role() = 'admin')
   with check (id = auth.uid() or public.app_role() = 'admin');
 
 -- categories
+drop policy if exists categories_select_staff on public.categories;
 create policy categories_select_staff on public.categories for select to authenticated
   using (public.app_role() is not null);
+drop policy if exists categories_select_public on public.categories;
 create policy categories_select_public on public.categories for select to anon
   using (true);
+drop policy if exists categories_write on public.categories;
 create policy categories_write on public.categories for all to authenticated
   using (public.app_role() = 'publisher')
   with check (public.app_role() = 'publisher');
 
 -- articles
+drop policy if exists articles_select on public.articles;
 create policy articles_select on public.articles for select to authenticated
   using (
     public.app_role() in ('editor', 'publisher', 'admin')
     or (public.app_role() = 'writer' and author_id = auth.uid())
   );
+drop policy if exists articles_insert on public.articles;
 create policy articles_insert on public.articles for insert to authenticated
   with check (public.app_role() in ('writer', 'editor', 'publisher') and author_id = auth.uid());
+drop policy if exists articles_update on public.articles;
 create policy articles_update on public.articles for update to authenticated
   using (
     (public.app_role() = 'writer' and author_id = auth.uid() and status = 'draft')
@@ -473,6 +507,7 @@ create policy articles_update on public.articles for update to authenticated
     or public.app_role() in ('publisher', 'admin')
   )
   with check (public.app_role() is not null);
+drop policy if exists articles_delete on public.articles;
 create policy articles_delete on public.articles for delete to authenticated
   using (
     (public.app_role() in ('writer', 'editor', 'publisher') and author_id = auth.uid() and status = 'draft')
@@ -480,12 +515,15 @@ create policy articles_delete on public.articles for delete to authenticated
   );
 
 -- revisions
+drop policy if exists revisions_select on public.article_revisions;
 create policy revisions_select on public.article_revisions for select to authenticated
   using (exists (select 1 from public.articles a where a.id = article_id));
 
 -- corrections
+drop policy if exists corrections_select on public.corrections;
 create policy corrections_select on public.corrections for select to authenticated
   using (exists (select 1 from public.articles a where a.id = article_id));
+drop policy if exists corrections_insert on public.corrections;
 create policy corrections_insert on public.corrections for insert to authenticated
   with check (
     public.app_role() in ('editor', 'publisher')
@@ -494,6 +532,7 @@ create policy corrections_insert on public.corrections for insert to authenticat
   );
 
 -- audit log: read only for admin and publisher, no client writes
+drop policy if exists audit_select on public.audit_log;
 create policy audit_select on public.audit_log for select to authenticated
   using (public.app_role() in ('admin', 'publisher'));
 revoke insert, update, delete on public.audit_log from anon, authenticated;
@@ -547,6 +586,7 @@ on conflict (id) do update
 set file_size_limit = excluded.file_size_limit,
     allowed_mime_types = excluded.allowed_mime_types;
 
+drop policy if exists newsroom_media_upload on storage.objects;
 create policy newsroom_media_upload on storage.objects for insert to authenticated
   with check (
     bucket_id = 'newsroom-media'

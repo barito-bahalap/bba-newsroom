@@ -1,0 +1,9 @@
+.category-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--nr-space-2);
+}
+
+.category-form input {
+  min-width: 16rem;
+}

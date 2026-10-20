@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { formatDateTime } from "@/lib/format";
-import type { Correction } from "@/lib/types";
+// Style
+import "./CorrectionPanel.css";
+// Utils
+import { formatDateTime, type Correction } from "@/lib";
 
 interface Props {
   corrections: Correction[];
@@ -10,7 +12,7 @@ interface Props {
   onAdd: (note: string) => Promise<boolean>;
 }
 
-export default function CorrectionPanel({
+export function CorrectionPanel({
   corrections,
   canAdd,
   busy,

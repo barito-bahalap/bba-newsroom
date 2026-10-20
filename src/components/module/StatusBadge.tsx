@@ -1,8 +1,12 @@
-import { STATUS_LABEL } from "@/lib/format";
-import type { ArticleStatus } from "@/lib/types";
+// Style
+import "./StatusBadge.css";
+// Utils
+import { STATUS_LABEL, type ArticleStatus } from "@/lib";
 
-export default function StatusBadge({ status }: { status: ArticleStatus }) {
+export function StatusBadge({ status }: { status: ArticleStatus }) {
   return (
-    <span className={`badge badge-${status}`}>{STATUS_LABEL[status]}</span>
+    <span className={`status-badge status-badge--${status}`}>
+      {STATUS_LABEL[status]}
+    </span>
   );
 }

@@ -1,0 +1,10 @@
+.layout {
+  min-height: 100dvh;
+  background-color: var(--nr-clr-canvas);
+}
+
+.layout__main {
+  max-width: var(--nr-content-max);
+  margin-inline: auto;
+  padding: var(--nr-space-6) var(--nr-page-padding) var(--nr-space-16);
+}

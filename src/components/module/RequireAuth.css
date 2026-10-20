@@ -1,0 +1,12 @@
+.auth-gate {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nr-space-4);
+  max-width: 28rem;
+  margin: var(--nr-space-16) auto;
+  padding-inline: var(--nr-page-padding);
+}
+
+.auth-gate--center {
+  text-align: center;
+}

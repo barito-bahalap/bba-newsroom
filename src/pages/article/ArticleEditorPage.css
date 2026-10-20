@@ -1,0 +1,30 @@
+.article-editor-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nr-space-4);
+}
+
+.article-editor-page__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--nr-space-2);
+}
+
+.article-editor-page__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--nr-space-6);
+}
+
+.article-editor-page__revisions summary {
+  margin-bottom: var(--nr-space-3);
+  cursor: pointer;
+  font-weight: var(--nr-fw-semibold);
+}
+
+@media (min-width: 64rem) {
+  .article-editor-page__grid {
+    grid-template-columns: minmax(0, 1fr) 20rem;
+  }
+}

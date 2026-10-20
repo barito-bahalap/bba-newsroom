@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/lib/supabase";
-import type { Category } from "@/lib/types";
+// Utils
+import { supabase, type Category } from "@/lib";
 
 export function useCategories() {
   return useQuery({

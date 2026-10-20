@@ -1,22 +1,22 @@
-import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "@/hooks/useAuth";
-
-const MIN_LENGTH = 12;
+// Style
+import "./SetPasswordPage.css";
+// Contexts & Hooks
+import { useAuth } from "@/contexts";
+import { usePasswordForm } from "@/hooks";
+// Components
+import { PasswordForm } from "@/components";
 
 export default function SetPasswordPage() {
-  const { session, loading, updatePassword } = useAuth();
+  const { session, loading } = useAuth();
   const navigate = useNavigate();
-  const [password, setPassword] = useState("");
-  const [confirm, setConfirm] = useState("");
-  const [error, setError] = useState("");
-  const [busy, setBusy] = useState(false);
+  const form = usePasswordForm(() => navigate("/", { replace: true }));
 
-  if (loading) return <p className="center">Loading...</p>;
+  if (loading) return <p className="set-password-page muted">Loading...</p>;
 
   if (!session) {
     return (
-      <div className="card-narrow">
+      <div className="set-password-page">
         <h1>Link expired</h1>
         <p>
           This link is invalid or has expired. Request a new one from the
@@ -27,56 +27,10 @@ export default function SetPasswordPage() {
     );
   }
 
-  async function handleSubmit(event: FormEvent) {
-    event.preventDefault();
-    setError("");
-    if (password.length < MIN_LENGTH) {
-      setError(`Use at least ${MIN_LENGTH} characters.`);
-      return;
-    }
-    if (password !== confirm) {
-      setError("Passwords do not match.");
-      return;
-    }
-    setBusy(true);
-    const message = await updatePassword(password);
-    setBusy(false);
-    if (message) {
-      setError(message);
-      return;
-    }
-    navigate("/", { replace: true });
-  }
-
   return (
-    <div className="card-narrow">
+    <div className="set-password-page">
       <h1>Set your password</h1>
-      <form onSubmit={(event) => void handleSubmit(event)}>
-        <label className="field">
-          <span>New password (min {MIN_LENGTH} characters)</span>
-          <input
-            type="password"
-            autoComplete="new-password"
-            required
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-          />
-        </label>
-        <label className="field">
-          <span>Confirm password</span>
-          <input
-            type="password"
-            autoComplete="new-password"
-            required
-            value={confirm}
-            onChange={(event) => setConfirm(event.target.value)}
-          />
-        </label>
-        {error && <p className="error">{error}</p>}
-        <button type="submit" disabled={busy}>
-          Save password
-        </button>
-      </form>
+      <PasswordForm {...form} submitLabel="Save password" />
     </div>
   );
 }

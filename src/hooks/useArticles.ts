@@ -1,6 +1,7 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { supabase } from "@/lib/supabase";
-import type { ArticleListRow, ArticleStatus } from "@/lib/types";
+// Utils
+import { supabase } from "@/lib";
+import type { ArticleListRow, ArticleStatus } from "@/lib";
 
 export const PAGE_SIZE = 20;
 

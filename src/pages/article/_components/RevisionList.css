@@ -1,0 +1,17 @@
+.revisions {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.revisions__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--nr-space-3);
+  padding-block: var(--nr-space-2);
+  border-bottom: var(--nr-border-w) solid var(--nr-clr-border);
+  font-size: var(--nr-fs-sm-alt);
+}

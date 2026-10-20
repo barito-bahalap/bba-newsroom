@@ -1,0 +1,6 @@
+.audit-table__json {
+  max-width: 22rem;
+  margin: var(--nr-space-1) 0 0;
+  overflow-x: auto;
+  font-size: var(--nr-fs-xs);
+}

@@ -1,0 +1,28 @@
+.corrections {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nr-space-3);
+}
+
+.corrections__title {
+  font-size: var(--nr-fs-2xl);
+}
+
+.corrections__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.corrections__item {
+  padding-block: var(--nr-space-2);
+  border-bottom: var(--nr-border-w) solid var(--nr-clr-border);
+  font-size: var(--nr-fs-sm-alt);
+}
+
+.corrections__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nr-space-3);
+  max-width: 36rem;
+}

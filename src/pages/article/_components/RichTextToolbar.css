@@ -1,0 +1,16 @@
+.rt-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--nr-space-1);
+  padding: var(--nr-space-2);
+  border: var(--nr-border-w) solid var(--nr-clr-border-strong);
+  border-bottom: 0;
+  border-radius: var(--nr-radius-sm) var(--nr-radius-sm) 0 0;
+  background-color: var(--nr-clr-surface);
+}
+
+.rt-toolbar__btn--active {
+  border-color: var(--nr-clr-primary);
+  background-color: var(--nr-clr-primary-soft);
+  font-weight: var(--nr-fw-bold);
+}

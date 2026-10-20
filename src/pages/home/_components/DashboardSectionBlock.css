@@ -1,0 +1,16 @@
+.dashboard-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nr-space-3);
+}
+
+.dashboard-section__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--nr-space-3);
+}
+
+.dashboard-section__title {
+  font-size: var(--nr-fs-2xl);
+}

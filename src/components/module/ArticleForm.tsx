@@ -1,10 +1,11 @@
 import type { ReactNode } from "react";
-import type { ArticleValues } from "@/lib/articleValues";
-import type { Category } from "@/lib/types";
+// Style
+import "./ArticleForm.css";
+// Utils
+import type { ArticleValues } from "@/lib";
 
 interface Props {
   values: ArticleValues;
-  categories: Category[];
   readOnly: boolean;
   slugLocked: boolean;
   uploadingCover: boolean;
@@ -15,7 +16,7 @@ interface Props {
   body: ReactNode;
 }
 
-export default function ArticleForm({
+export function ArticleForm({
   values,
   categories,
   readOnly,

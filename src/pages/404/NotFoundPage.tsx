@@ -1,10 +1,14 @@
 import { Link } from "react-router-dom";
+// Style
+import "./NotFoundPage.css";
 
 export default function NotFoundPage() {
   return (
-    <div className="card-narrow">
+    <div className="not-found-page">
       <h1>Page not found</h1>
-      <Link to="/">Back to dashboard</Link>
+      <p>
+        <Link to="/">Back to dashboard</Link>
+      </p>
     </div>
   );
 }

@@ -1,104 +1,58 @@
-import { useEffect, useState, type FormEvent } from "react";
-import { Link, useSearchParams } from "react-router-dom";
-import ArticleTable from "@/components/module/ArticleTable";
-import Pagination from "@/components/module/Pagination";
-import { PAGE_SIZE, useArticleList } from "@/hooks/useArticles";
-import { useAuth } from "@/hooks/useAuth";
-import { useCategories } from "@/hooks/useCategories";
-import { STATUS_LABEL } from "@/lib/format";
-import { can } from "@/lib/permissions";
-import type { ArticleStatus } from "@/lib/types";
-
-const STATUSES = Object.keys(STATUS_LABEL) as ArticleStatus[];
+import { Link } from "react-router-dom";
+// Style
+import "./ArticlesPage.css";
+// Contexts & Hooks
+import { useAuth } from "@/contexts";
+import { PAGE_SIZE, useArticleFilters } from "@/hooks";
+// Components
+import { Notice, PageHeader, Pagination } from "@/components";
+import { ArticleTable } from "@/components";
+import { ArticleFilterBar } from "./_components";
+// Utils
+import { can } from "@/lib";
 
 export default function ArticlesPage() {
   const { profile } = useAuth();
-  const [params, setParams] = useSearchParams();
-  const categories = useCategories();
-
-  const rawStatus = params.get("status") ?? "all";
-  const status = (STATUSES as string[]).includes(rawStatus)
-    ? (rawStatus as ArticleStatus)
-    : "all";
-  const search = params.get("q") ?? "";
-  const categoryId = params.get("category") ?? "";
-  const page = Math.max(1, Number(params.get("page")) || 1);
-
-  const [searchInput, setSearchInput] = useState(search);
-  useEffect(() => setSearchInput(search), [search]);
-
-  const list = useArticleList({ status, search, categoryId, page });
-
-  function update(patch: Record<string, string>) {
-    const next = new URLSearchParams(params);
-    if (!("page" in patch)) next.delete("page");
-    for (const [key, value] of Object.entries(patch)) {
-      if (value === "" || value === "all") next.delete(key);
-      else next.set(key, value);
-    }
-    setParams(next);
-  }
-
-  function submitSearch(event: FormEvent) {
-    event.preventDefault();
-    update({ q: searchInput.trim() });
-  }
+  const filters = useArticleFilters();
 
   if (!profile) return null;
 
+  const { list } = filters;
+
   return (
-    <div>
-      <div className="row between">
-        <h1>ArticlesPage</h1>
+    <div className="articles-page">
+      <PageHeader title="Articles">
         {can.writeArticles(profile.role) && (
-          <Link className="button" to="/articles/new">
+          <Link className="btn btn--primary" to="/articles/new">
             Write a new article
           </Link>
         )}
-      </div>
+      </PageHeader>
 
-      <form className="row" onSubmit={submitSearch}>
-        <select
-          value={status}
-          onChange={(event) => update({ status: event.target.value })}
-        >
-          <option value="all">All statuses</option>
-          {STATUSES.map((value) => (
-            <option key={value} value={value}>
-              {STATUS_LABEL[value]}
-            </option>
-          ))}
-        </select>
-        <select
-          value={categoryId}
-          onChange={(event) => update({ category: event.target.value })}
-        >
-          <option value="">All categories</option>
-          {(categories.data ?? []).map((category) => (
-            <option key={category.id} value={category.id}>
-              {category.name}
-            </option>
-          ))}
-        </select>
-        <input
-          type="search"
-          placeholder="Search title"
-          value={searchInput}
-          onChange={(event) => setSearchInput(event.target.value)}
-        />
-        <button type="submit">Search</button>
-      </form>
+      <ArticleFilterBar
+        status={filters.status}
+        categoryId={filters.categoryId}
+        searchInput={filters.searchInput}
+        categories={filters.categories}
+        onStatus={filters.setStatus}
+        onCategory={filters.setCategory}
+        onSearchInput={filters.setSearchInput}
+        onSubmit={filters.submitSearch}
+      />
 
       {list.isLoading && <p className="muted">Loading...</p>}
-      {list.error && <p className="error">Could not load articles.</p>}
+      {list.error && <Notice tone="error">Could not load articles.</Notice>}
       {list.data && (
         <>
           <ArticleTable rows={list.data.rows} />
           <Pagination
-            page={page}
-            pageSize={PAGE_SIZE}
-            total={list.data.total}
-            onPage={(next) => update({ page: String(next) })}
+            page={filters.page}
+            totalPages={Math.ceil(list.data.total / PAGE_SIZE)}
+            onPageChange={filters.setPage}
+            prevLabel="Previous"
+            nextLabel="Next"
+            pageLabel="Page"
+            ofLabel="of"
           />
         </>
       )}

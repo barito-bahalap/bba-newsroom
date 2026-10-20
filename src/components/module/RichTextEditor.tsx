@@ -3,6 +3,8 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
 import Placeholder from "@tiptap/extension-placeholder";
+// Style
+import "./RichTextEditor.css";
 
 interface Props {
   initialHtml: string;
@@ -12,7 +14,7 @@ interface Props {
   onUploadImage: (file: File) => Promise<string>;
 }
 
-export default function RichTextEditor({
+export function RichTextEditor({
   initialHtml,
   resetKey,
   editable,
@@ -55,13 +57,21 @@ export default function RichTextEditor({
   function setLink() {
     if (!editor) return;
     const previous = editor.getAttributes("link").href as string | undefined;
-    const url = window.prompt("Link URL (leave empty to remove)", previous ?? "https://");
+    const url = window.prompt(
+      "Link URL (leave empty to remove)",
+      previous ?? "https://",
+    );
     if (url === null) return;
     if (url.trim() === "") {
       editor.chain().focus().extendMarkRange("link").unsetLink().run();
       return;
     }
-    editor.chain().focus().extendMarkRange("link").setLink({ href: url.trim() }).run();
+    editor
+      .chain()
+      .focus()
+      .extendMarkRange("link")
+      .setLink({ href: url.trim() })
+      .run();
   }
 
   async function handleFile(file: File | undefined) {
@@ -80,7 +90,12 @@ export default function RichTextEditor({
     }
   }
 
-  const button = (label: string, active: boolean, run: () => void, disabled = false) => (
+  const button = (
+    label: string,
+    active: boolean,
+    run: () => void,
+    disabled = false,
+  ) => (
     <button
       type="button"
       className={active ? "active" : ""}
@@ -95,8 +110,12 @@ export default function RichTextEditor({
     <div>
       {editable && (
         <div className="editor-toolbar">
-          {button("Bold", editor.isActive("bold"), () => editor.chain().focus().toggleBold().run())}
-          {button("Italic", editor.isActive("italic"), () => editor.chain().focus().toggleItalic().run())}
+          {button("Bold", editor.isActive("bold"), () =>
+            editor.chain().focus().toggleBold().run(),
+          )}
+          {button("Italic", editor.isActive("italic"), () =>
+            editor.chain().focus().toggleItalic().run(),
+          )}
           {button("H2", editor.isActive("heading", { level: 2 }), () =>
             editor.chain().focus().toggleHeading({ level: 2 }).run(),
           )}
@@ -114,9 +133,21 @@ export default function RichTextEditor({
           )}
           {button("Link", editor.isActive("link"), setLink)}
           {button("Image", false, () => fileInput.current?.click(), uploading)}
-          {button("Line", false, () => editor.chain().focus().setHorizontalRule().run())}
-          {button("Undo", false, () => editor.chain().focus().undo().run(), !editor.can().undo())}
-          {button("Redo", false, () => editor.chain().focus().redo().run(), !editor.can().redo())}
+          {button("Line", false, () =>
+            editor.chain().focus().setHorizontalRule().run(),
+          )}
+          {button(
+            "Undo",
+            false,
+            () => editor.chain().focus().undo().run(),
+            !editor.can().undo(),
+          )}
+          {button(
+            "Redo",
+            false,
+            () => editor.chain().focus().redo().run(),
+            !editor.can().redo(),
+          )}
           <input
             ref={fileInput}
             type="file"

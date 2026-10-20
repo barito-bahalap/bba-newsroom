@@ -1,0 +1,18 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nr-space-1);
+  min-width: 0;
+}
+
+.field__label {
+  font-size: var(--nr-fs-sm-alt);
+  font-weight: var(--nr-fw-semibold);
+  color: var(--nr-clr-ink-soft);
+}
+
+.field > input:not([type="checkbox"]):not([type="file"]),
+.field > select,
+.field > textarea {
+  width: 100%;
+}

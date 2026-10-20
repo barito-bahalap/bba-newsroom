@@ -1,12 +1,16 @@
 import { useState } from "react";
-import Pagination from "@/components/module/Pagination";
-import { AUDIT_PAGE_SIZE, useAuditLog } from "@/hooks/useAudit";
-import { formatDateTime } from "@/lib/format";
-import type { AuditRow } from "@/lib/types";
+// Style
+import "./AuditLogPage.css";
+// Hooks
+import { AUDIT_PAGE_SIZE, useAuditLog } from "@/hooks";
+// Components
+import { Pagination } from "@/components";
+// Utils
+import { formatDateTime, type AuditRow } from "@/lib";
 
 const ENTITIES = [
   { value: "", label: "Everything" },
-  { value: "article", label: "ArticlesPage" },
+  { value: "article", label: "Articles" },
   { value: "profile", label: "Team" },
   { value: "categories", label: "Categories" },
   { value: "corrections", label: "Corrections" },
@@ -106,9 +110,12 @@ export default function AuditLogPage() {
           </table>
           <Pagination
             page={page}
-            pageSize={AUDIT_PAGE_SIZE}
-            total={audit.data.total}
-            onPage={setPage}
+            totalPages={Math.ceil(audit.data.total / AUDIT_PAGE_SIZE)}
+            onPageChange={setPage}
+            prevLabel="Previous"
+            nextLabel="Next"
+            pageLabel="Page"
+            ofLabel="of"
           />
         </>
       )}

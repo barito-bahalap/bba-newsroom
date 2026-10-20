@@ -1,6 +1,6 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { supabase } from "@/lib/supabase";
-import type { AuditRow } from "@/lib/types";
+// Utils
+import { supabase, type AuditRow } from "@/lib";
 
 export const AUDIT_PAGE_SIZE = 50;
 

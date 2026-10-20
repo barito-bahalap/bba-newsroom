@@ -1,34 +1,19 @@
-import { Suspense } from "react";
-import { Outlet } from "react-router-dom";
-// Layout & Components
-import { Layout } from "@/components";
-import { RequireAuth } from "@/components/module";
-import { AuthLinkRedirect } from "./AuthLinkRedirect";
+// Components
+import { Layout, RequireAuth } from "@/components";
+import { AuthShell } from ".";
 // Pages
 import AccountPage from "@/pages/account/AccountPage";
-import AuditLogPage from "@/pages/audit/AuditLogPage";
 import ArticlesPage from "@/pages/article/ArticlesPage";
 import ArticleEditorPage from "@/pages/article/ArticleEditorPage";
+import AuditPage from "@/pages/audit/AuditPage";
+import LoginPage from "@/pages/auth/LoginPage";
 import CategoriesPage from "@/pages/categories/CategoriesPage";
 import DashboardPage from "@/pages/home/DashboardPage";
-import LoginPage from "@/pages/auth/LoginPage";
-import NotFoundPage from "@/pages/404/NotFoundPage";
 import SetPasswordPage from "@/pages/settings/SetPasswordPage";
 import TeamPage from "@/pages/team/TeamPage";
+import NotFoundPage from "@/pages/404/NotFoundPage";
 // Utils
-import { WRITE_ROLES } from "@/lib/permissions";
-
-// Must live inside the router, because AuthLinkRedirect uses useNavigate.
-function AuthShell() {
-  return (
-    <>
-      <AuthLinkRedirect />
-      <Suspense fallback={<p className="center">Loading...</p>}>
-        <Outlet />
-      </Suspense>
-    </>
-  );
-}
+import { WRITE_ROLES } from "@/lib";
 
 export const appRoutes = [
   {
@@ -61,7 +46,7 @@ export const appRoutes = [
               },
               {
                 element: <RequireAuth roles={["admin", "publisher"]} />,
-                children: [{ path: "audit", element: <AuditLogPage /> }],
+                children: [{ path: "audit", element: <AuditPage /> }],
               },
               { path: "account", element: <AccountPage /> },
               { path: "*", element: <NotFoundPage /> },

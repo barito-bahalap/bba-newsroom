@@ -1,5 +1,7 @@
-import { formatDateTime } from "@/lib/format";
-import type { Revision } from "@/lib/types";
+// Style
+import "./RevisionList.css";
+// Utils
+import { formatDateTime, type Revision } from "@/lib";
 
 interface Props {
   revisions: Revision[];
@@ -7,11 +9,7 @@ interface Props {
   onRestore: (revision: Revision) => void;
 }
 
-export default function RevisionList({
-  revisions,
-  canRestore,
-  onRestore,
-}: Props) {
+export function RevisionList({ revisions, canRestore, onRestore }: Props) {
   if (revisions.length === 0) return <p className="muted">No revisions yet.</p>;
   return (
     <ul className="plain">

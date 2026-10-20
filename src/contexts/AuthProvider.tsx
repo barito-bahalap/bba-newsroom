@@ -1,34 +1,20 @@
 import {
-  createContext,
   useCallback,
-  useContext,
   useEffect,
   useMemo,
   useState,
   type ReactNode,
 } from "react";
-import type { Session } from "@supabase/supabase-js";
-import { supabase } from "@/lib/supabase";
-import type { Profile } from "@/lib/types";
+import type { AuthValue, Session } from "./useAuth";
+import { supabase, type Profile } from "@/lib";
+import { AuthContext } from "./AuthContext";
 
-interface AuthValue {
-  session: Session | null;
-  profile: Profile | null;
-  loading: boolean;
-  signIn: (email: string, password: string) => Promise<string | null>;
-  signOut: () => Promise<void>;
-  refreshProfile: () => Promise<void>;
-  sendReset: (email: string) => Promise<void>;
-  updatePassword: (password: string) => Promise<string | null>;
-}
-
-const AuthContext = createContext<AuthValue | null>(null);
+type ProfileState = { id: string; profile: Profile | null };
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [sessionReady, setSessionReady] = useState(false);
-  const [profile, setProfile] = useState<Profile | null>(null);
-  const [profileFor, setProfileFor] = useState<string | null>(null);
+  const [profileState, setProfileState] = useState<ProfileState | null>(null);
   const userId = session?.user.id ?? null;
 
   useEffect(() => {
@@ -42,24 +28,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => data.subscription.unsubscribe();
   }, []);
 
-  const loadProfile = useCallback(async (id: string) => {
+  const fetchProfile = useCallback(async (id: string) => {
     const { data } = await supabase
       .from("profiles")
       .select("*")
       .eq("id", id)
       .maybeSingle();
-    setProfile((data as Profile | null) ?? null);
-    setProfileFor(id);
+    return (data as Profile | null) ?? null;
   }, []);
 
   useEffect(() => {
-    if (!userId) {
-      setProfile(null);
-      setProfileFor(null);
-      return;
-    }
-    void loadProfile(userId);
-  }, [userId, loadProfile]);
+    if (!userId) return; // signed out is handled by derived state below
+    let active = true;
+    void fetchProfile(userId).then((profile) => {
+      if (active) setProfileState({ id: userId, profile });
+    });
+    return () => {
+      active = false;
+    };
+  }, [userId, fetchProfile]);
+
+  // Derived during render: only trust the stored profile if it belongs to the current user.
+  const profileLoaded = userId !== null && profileState?.id === userId;
+  const profile = profileLoaded ? profileState.profile : null;
 
   const signIn = useCallback(async (email: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({
@@ -77,8 +68,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const refreshProfile = useCallback(async () => {
-    if (userId) await loadProfile(userId);
-  }, [userId, loadProfile]);
+    if (userId) {
+      const profile = await fetchProfile(userId);
+      setProfileState({ id: userId, profile });
+    }
+  }, [userId, fetchProfile]);
 
   const sendReset = useCallback(async (email: string) => {
     await supabase.auth.resetPasswordForEmail(email, {
@@ -91,7 +85,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return error ? error.message : null;
   }, []);
 
-  const loading = !sessionReady || (userId !== null && profileFor !== userId);
+  const loading = !sessionReady || (userId !== null && !profileLoaded);
 
   const value = useMemo<AuthValue>(
     () => ({
@@ -117,10 +111,4 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-}
-
-export function useAuth(): AuthValue {
-  const context = useContext(AuthContext);
-  if (!context) throw new Error("useAuth must be used inside AuthProvider");
-  return context;
 }

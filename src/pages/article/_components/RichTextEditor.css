@@ -1,0 +1,45 @@
+.rt-editor {
+  display: flex;
+  flex-direction: column;
+}
+
+.rt-editor__content .ProseMirror {
+  min-height: 22rem;
+  padding: var(--nr-space-3) var(--nr-space-4);
+  border: var(--nr-border-w) solid var(--nr-clr-border-strong);
+  border-radius: 0 0 var(--nr-radius-sm) var(--nr-radius-sm);
+  background-color: var(--nr-clr-paper);
+  outline: none;
+}
+
+.rt-editor__content .ProseMirror:focus {
+  border-color: var(--nr-clr-primary);
+}
+
+.rt-editor__content .ProseMirror > * + * {
+  margin-top: var(--nr-space-3);
+}
+
+.rt-editor__content .ProseMirror img {
+  max-width: 100%;
+  height: auto;
+}
+
+.rt-editor__content .ProseMirror blockquote {
+  margin-left: 0;
+  padding-left: var(--nr-space-3);
+  border-left: var(--nr-border-w-thick) solid var(--nr-clr-border-strong);
+}
+
+.rt-editor__content .ProseMirror a {
+  color: var(--nr-clr-primary);
+  text-decoration: underline;
+}
+
+.rt-editor__content .ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  color: var(--nr-clr-ink-muted);
+  pointer-events: none;
+}

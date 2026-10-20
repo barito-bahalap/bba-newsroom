@@ -1,1 +1,6 @@
- 
+.not-found-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nr-space-3);
+  max-width: 28rem;
+}

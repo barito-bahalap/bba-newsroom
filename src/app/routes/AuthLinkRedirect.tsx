@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-// Hooks
-import { useAuth } from "@/hooks";
+// Contexts
+import { useAuth } from "@/contexts";
 // Utils
-import { authLink } from "@/lib/supabase";
+import { authLink } from "@/lib";
 
 let authLinkHandled = false;
 

@@ -1,0 +1,27 @@
+.article-side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nr-space-4);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.article-side__cover {
+  width: 100%;
+  height: auto;
+  border-radius: var(--nr-radius-sm);
+}
+
+.article-side__seo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nr-space-3);
+}
+
+.article-side__seo summary {
+  margin-bottom: var(--nr-space-3);
+  cursor: pointer;
+  font-weight: var(--nr-fw-semibold);
+}

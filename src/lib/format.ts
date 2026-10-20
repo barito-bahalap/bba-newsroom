@@ -7,12 +7,16 @@ export const STATUS_LABEL: Record<ArticleStatus, string> = {
   unpublished: "Unpublished",
 };
 
+export const STATUSES = Object.keys(STATUS_LABEL) as ArticleStatus[];
+
 export const ROLE_LABEL: Record<Role, string> = {
   writer: "Writer",
   editor: "Editor",
   publisher: "Publisher",
   admin: "Admin",
 };
+
+export const ROLES = Object.keys(ROLE_LABEL) as Role[];
 
 const dateTime = new Intl.DateTimeFormat("id-ID", {
   dateStyle: "medium",
