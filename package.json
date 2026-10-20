@@ -16,7 +16,7 @@
     "update:kit": "pnpm update \"@barito-bahalap/*\" --latest"
   },
   "dependencies": {
-    "@barito-bahalap/components": "^1.16.0",
+    "@barito-bahalap/components": "^1.16.1",
     "@barito-bahalap/styles": "^1.4.0",
     "@barito-bahalap/supabase": "^1.0.3",
     "@tanstack/react-query": "^5.101.2",
