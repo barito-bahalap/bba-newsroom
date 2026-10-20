@@ -1,2 +1,4 @@
+allowBuilds:
+  esbuild: false
 minimumReleaseAgeExclude:
-  - "@barito-bahalap/styles@1.2.0"
+  - "@barito-bahalap/*"
