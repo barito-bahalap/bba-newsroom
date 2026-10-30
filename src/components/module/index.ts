@@ -7,6 +7,5 @@ export { PageHeader } from "./PageHeader";
 export { PasswordForm } from "./PasswordForm";
 export { RequireAuth } from "./RequireAuth";
 export { RevisionList } from "./RevisionList";
-export { RichTextEditor } from "./RichTextEditor";
 export { StatusBadge } from "./StatusBadge";
 export { WorkflowBar } from "./WorkflowBar";

@@ -12,7 +12,7 @@ export function RequireAuth({ roles }: { roles?: Role[] }) {
   const { session, profile, loading, signOut } = useAuth();
   const location = useLocation();
 
-  if (loading) return <LoadingSpinner />;
+  if (loading) return <LoadingSpinner full />;
 
   if (!session) {
     return <Navigate to="/login" replace state={{ from: location.pathname }} />;

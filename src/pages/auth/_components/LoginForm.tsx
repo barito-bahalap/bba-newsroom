@@ -2,7 +2,7 @@ import type { FormEvent } from "react";
 // Style
 import "./LoginForm.css";
 // Components
-import { FieldTag, Notice } from "@/components";
+import { Button, Input, Notice } from "@/components";
 
 interface LoginFormProps {
   email: string;
@@ -36,35 +36,42 @@ export function LoginForm({
 
   return (
     <form className="login-form" onSubmit={handleSubmit}>
-      <FieldTag label="Email">
-        <input
-          type="email"
-          autoComplete="username"
-          required
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-        />
-      </FieldTag>
+      <Input
+        id="email"
+        label="Email"
+        type="email"
+        autoComplete="username"
+        required
+        value={email}
+        onChange={(event) => setEmail(event.target.value)}
+      />
       {!forgot && (
-        <FieldTag label="Password">
-          <input
-            type="password"
-            autoComplete="current-password"
-            required
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-          />
-        </FieldTag>
+        <Input
+          id="password"
+          label="Password"
+          type="password"
+          autoComplete="current-password"
+          required
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
+          obscurial
+        />
       )}
       {error && <Notice tone="error">{error}</Notice>}
       {info && <Notice>{info}</Notice>}
-      <div className="cluster">
-        <button type="submit" className="btn btn--primary" disabled={busy}>
-          {forgot ? "Send reset link" : "Sign in"}
-        </button>
-        <button type="button" className="btn" onClick={toggleForgot}>
-          {forgot ? "Back to sign in" : "Forgot password"}
-        </button>
+
+      <div className="stack center">
+        <Button
+          label={forgot ? "Send reset link" : "Sign in"}
+          type="submit"
+          disabled={busy}
+        />
+        <Button
+          label={forgot ? "Back to sign in" : "Forgot password"}
+          type="button"
+          className="btn"
+          onClick={toggleForgot}
+        />
       </div>
     </form>
   );

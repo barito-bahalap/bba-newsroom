@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import "./Header.css";
 // Utils
 import type { NavItem } from "@/lib";
+import { Brand } from "./Brand";
 
 interface HeaderProps {
   links: NavItem[];
@@ -13,8 +14,9 @@ interface HeaderProps {
 export function Header({ links, userLabel, onSignOut }: HeaderProps) {
   return (
     <header className="header">
-      <div className="header__inner">
-        <strong className="header__brand">BBM Newsroom</strong>
+      <div className="header__inner"> 
+        <Brand logo />
+
         <nav className="header__nav" aria-label="Main">
           {links.map((link) => (
             <NavLink

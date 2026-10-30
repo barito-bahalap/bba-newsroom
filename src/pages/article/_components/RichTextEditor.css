@@ -43,3 +43,11 @@
   color: var(--nr-clr-ink-muted);
   pointer-events: none;
 }
+
+.rt-editor__content .ProseMirror em,
+.rt-editor__content .ProseMirror i,
+.rt-editor__content .ProseMirror em *,
+.rt-editor__content .ProseMirror i * {
+  font-family: "PT Serif", serif;
+  font-style: italic;
+}
