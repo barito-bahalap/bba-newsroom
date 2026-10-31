@@ -4,8 +4,7 @@ import "./ArticleEditorPage.css";
 // Hooks
 import { useArticleEditor } from "@/hooks";
 // Components
-import { Notice, PageHeader, StatusBadge } from "@/components";
-import { LoadingSpinner } from "@/components";
+import { Notice, PageHeader, StatusBadge, LoadingSpinner } from "@/components";
 import { ArticleMainFields, ArticleMeta, CorrectionPanel } from "./_components";
 import { ArticleSidebarFields, RevisionList } from "./_components";
 import { RichTextEditor, WorkflowBar } from "./_components";

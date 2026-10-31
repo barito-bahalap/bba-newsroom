@@ -25,3 +25,16 @@
   cursor: pointer;
   font-weight: var(--nr-fw-semibold);
 }
+
+@media (min-width: 64rem) {
+  .article-side {
+    --article-side-top: calc(var(--nr-toolbar-top, 0px) + var(--nr-space-4));
+    position: sticky;
+    top: var(--article-side-top);
+    align-self: start;
+    max-height: calc(100dvh - var(--article-side-top) - var(--nr-space-4));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: var(--nr-space-1);
+  }
+}
