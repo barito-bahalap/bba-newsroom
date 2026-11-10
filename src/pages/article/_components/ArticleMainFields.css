@@ -14,3 +14,9 @@
   padding: 0;
   border: 0;
 }
+
+.article-main__link {
+  align-self: flex-start;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}

@@ -45,16 +45,7 @@ export function ArticleMainFields({
             onChange={(event) => onTitle(event.target.value)}
           />
         </FieldTag>
-        <FieldTag
-          label={slugLocked ? "Slug (locked after first publication)" : "Slug"}
-        >
-          <input
-            type="text"
-            value={values.slug}
-            disabled={slugLocked}
-            onChange={(event) => onSlug(event.target.value)}
-          />
-        </FieldTag>
+
         {publicUrl && (
           <a
             className="article-main__link"
@@ -65,6 +56,17 @@ export function ArticleMainFields({
             Go to article (new tab) ↗
           </a>
         )}
+        <FieldTag
+          label={slugLocked ? "Slug (locked after first publication)" : "Slug"}
+        >
+          <input
+            type="text"
+            value={values.slug}
+            disabled={slugLocked}
+            onChange={(event) => onSlug(event.target.value)}
+          />
+        </FieldTag>
+
         <FieldTag label={`Excerpt (${values.excerpt.length}/300)`}>
           <textarea
             rows={3}
