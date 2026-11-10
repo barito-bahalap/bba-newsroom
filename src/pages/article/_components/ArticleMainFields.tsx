@@ -16,6 +16,10 @@ interface ArticleMainFieldsProps {
   body: ReactNode;
 }
 
+const MEDIA_URL = (
+  import.meta.env.VITE_MEDIA_URL as string | undefined
+)?.replace(/\/$/, "");
+
 export function ArticleMainFields({
   values,
   readOnly,
@@ -25,6 +29,11 @@ export function ArticleMainFields({
   onChange,
   body,
 }: ArticleMainFieldsProps) {
+  const publicUrl =
+    MEDIA_URL && slugLocked && values.slug
+      ? `${MEDIA_URL}/insight/${encodeURIComponent(values.slug)}`
+      : null;
+
   return (
     <div className="article-main">
       <fieldset className="article-main__fields" disabled={readOnly}>
@@ -46,6 +55,16 @@ export function ArticleMainFields({
             onChange={(event) => onSlug(event.target.value)}
           />
         </FieldTag>
+        {publicUrl && (
+          <a
+            className="article-main__link"
+            href={publicUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Go to article (new tab) ↗
+          </a>
+        )}
         <FieldTag label={`Excerpt (${values.excerpt.length}/300)`}>
           <textarea
             rows={3}

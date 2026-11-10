@@ -1,4 +1,3 @@
-export { ArticleForm } from "./ArticleForm";
 export { ArticleTable } from "./ArticleTable";
 export { CorrectionPanel } from "./CorrectionPanel";
 export { Field as FieldTag } from "./Field";
